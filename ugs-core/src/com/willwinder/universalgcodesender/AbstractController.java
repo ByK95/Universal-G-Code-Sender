@@ -697,6 +697,21 @@ public abstract class AbstractController implements CommunicatorListener, IContr
         numCommandsSent = 0;
     }
 
+    public void updateNumCommandJumps(int skip_count) {
+        if (streamCommands != null) {
+            numCommands = streamCommands.getNumRows();
+        }
+
+        if (skip_count > 0){
+            numCommandsSkipped = skip_count;
+        }else {
+            numCommandsSkipped = 0;
+        }
+
+        numCommandsCompleted = numCommands - streamCommands.getNumRows();
+        numCommandsSent = numCommands - streamCommands.getNumRows();
+    }
+
     // No longer a listener event
     protected void fileStreamComplete(String filename, boolean success) {
 

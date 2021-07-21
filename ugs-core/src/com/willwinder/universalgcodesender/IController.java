@@ -235,4 +235,6 @@ public interface IController {
      * @return the current controller status
      */
     ControllerStatus getControllerStatus();
+
+    void updateNumCommandJumps(int skipped);
 }

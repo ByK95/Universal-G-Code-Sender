@@ -84,6 +84,7 @@ public class GUIBackend implements BackendAPI, ControllerListener, SettingChange
     private boolean autoconnect = false;
     
     private GcodeParser gcp = new GcodeParser();
+    private GcodeCachedStreamReader cachedStreamReader;
 
     @Override
     public void addUGSEventListener(UGSEventListener listener) {
@@ -542,12 +543,18 @@ public class GUIBackend implements BackendAPI, ControllerListener, SettingChange
             // This will throw an exception and prevent that other stuff from
             // happening (clearing the table before its ready for clearing.
             this.controller.isReadyToStreamFile();
-            this.controller.queueStream(new GcodeStreamReader(this.processedGcodeFile));
+            cachedStreamReader = new GcodeCachedStreamReader(this.processedGcodeFile);
+            this.controller.queueStream(cachedStreamReader);
             this.controller.beginStreaming();
         } catch (Exception e) {
             this.sendUGSEvent(new UGSEvent(ControlState.COMM_IDLE), false);
             throw new Exception(Localization.getString("mainWindow.error.startingStream"), e);
         }
+    }
+
+    public void juuumps(){
+        int skipped = cachedStreamReader.jumpToLine(600);
+        this.controller.updateNumCommandJumps(skipped);
     }
     
     @Override

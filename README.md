@@ -135,3 +135,11 @@ Before you start you need to change a setting for handling imports in Maven sinc
   - Working dir: `$ProjectFileDir$`
   - Use classpath of module: `ugs-platform-app` 
 - There is a [runConfiguration](.idea/runConfigurations/UGS_Platform.xml) in the repository, which should be available after importing the project
+
+
+## RUNNING
+
+$ mvnDebug exec:java -Dexec.mainClass="com.willwinder.universalgcodesender.MainWindow"
+
+maven install ugs-core
+maven install ugs-classic
