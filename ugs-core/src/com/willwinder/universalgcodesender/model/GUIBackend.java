@@ -552,8 +552,13 @@ public class GUIBackend implements BackendAPI, ControllerListener, SettingChange
         }
     }
 
-    public void juuumps(){
-        int skipped = cachedStreamReader.jumpToLine(600);
+    public void jumpToLine(int line_number){
+        try {
+            this.controller.pauseStreaming();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        int skipped = cachedStreamReader.jumpToLine(line_number);
         this.controller.updateNumCommandJumps(skipped);
     }
     

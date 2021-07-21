@@ -4,9 +4,12 @@ import com.willwinder.universalgcodesender.types.GcodeCommand;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.TreeSet;
 
 public class GcodeCachedStreamReader extends GcodeStream implements IGcodeStreamReader {
     private HashMap<Integer, String> lines;
+    private TreeSet<Integer> operations;
+    private TreeSet<Integer> movements;
     private BufferedReader reader;
     private int numRows;
     private int line_index;
@@ -16,6 +19,8 @@ public class GcodeCachedStreamReader extends GcodeStream implements IGcodeStream
         this.reader = reader;
         line_index = 0;
         lines = new HashMap<>();
+        operations = new TreeSet<>();
+        movements = new TreeSet<>();
         try {
             String metadata = reader.readLine().trim();
 
@@ -27,10 +32,19 @@ public class GcodeCachedStreamReader extends GcodeStream implements IGcodeStream
             numRows = Integer.parseInt(metadata);
             numRowsRemaining = numRows;
             for (int i = 0; i < numRows + 1; i++){
-                lines.put(i, reader.readLine());
+                String row = reader.readLine();
+                if(row != null) {
+                    lines.put(i, row);
+                    if(row.contains("movement")){
+                        movements.add(i);
+                    }
+                    if(row.contains("operation")){
+                        operations.add(i);
+                    }
+                }
             }
             reader.close();
-        } catch (IOException | NumberFormatException e) {
+        } catch (Exception e ) {
             throw new GcodeStreamReader.NotGcodeStreamFile();
         }
     }

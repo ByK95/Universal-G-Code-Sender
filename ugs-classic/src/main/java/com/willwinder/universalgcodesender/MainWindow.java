@@ -1413,7 +1413,7 @@ public class MainWindow extends JFrame implements ControllerListener, UGSEventLi
         }
     }//GEN-LAST:event_resetYCoordinateButtonActionPerformed
 
-    private void helpButtonMachineControlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpButtonMachineControlActionPerformed
+    private void helpButtonMachineControlActionPerformed(ActionEvent evt) {//GEN-FIRST:event_helpButtonMachineControlActionPerformed
         StringBuilder message = new StringBuilder()
         .append(Localization.getString("mainWindow.resetZero")).append("\n")
         .append(Localization.getString("mainWindow.returnToZero")).append("\n")
@@ -1430,6 +1430,8 @@ public class MainWindow extends JFrame implements ControllerListener, UGSEventLi
         .append(Localization.getString("mainWindow.helpKeyDivMul")).append("\n")
         .append(Localization.getString("mainWindow.helpKeyZero")).append("\n")
         ;
+        GUIBackend temp = ((GUIBackend) this.backend);
+        temp.jumpToLine(600);
 
         JOptionPane.showMessageDialog(new JFrame(),
             message,
